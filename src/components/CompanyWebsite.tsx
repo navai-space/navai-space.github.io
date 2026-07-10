@@ -341,11 +341,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                   </p>
                 )}
 
-                <div className="pt-2 flex flex-col sm:flex-row justify-between items-center gap-4">
-                  <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
-                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                    <span>Secure End-to-End Encrypted Tunnel</span>
-                  </div>
+                <div className="pt-2 flex justify-end">
                   <button
                     type="submit"
                     disabled={isSending}
