@@ -1,20 +1,51 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# NAVAI Space — Company Website
 
-# Run and deploy your AI Studio app
+Source for [navai-space.github.io](https://navai-space.github.io) — the website of **NAVAI Space**, building the onboard perception layer for spacecraft autonomy: an edge-optimized multi-sensor foundation model that lets spacecraft track non-cooperative targets in real time, under the harshest lighting conditions in orbit.
 
-This contains everything you need to run your app locally.
+The site is a single-page React app with two views:
 
-View your app in AI Studio: https://ai.studio/apps/a676c185-c8bf-4c10-8079-d70c8df01893
+- **Company website** — landing page with mission, technology, and team.
+- **Developer portal** — interactive showcase and repository template browser.
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- [React 19](https://react.dev/) + TypeScript
+- [Vite 6](https://vite.dev/) for dev server and production builds
+- [Tailwind CSS 4](https://tailwindcss.com/) via `@tailwindcss/vite`
+- [Motion](https://motion.dev/) for animations, [Lucide](https://lucide.dev/) icons
 
+## Development
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**Prerequisites:** Node.js 20+
+
+```bash
+npm install     # install dependencies
+npm run dev     # start dev server at http://localhost:3000
+npm run lint    # type-check with tsc
+npm run build   # production build to dist/
+npm run preview # preview the production build
+```
+
+## Project Structure
+
+```
+├── index.html               # Vite entry point
+├── src/
+│   ├── main.tsx             # React bootstrap
+│   ├── App.tsx              # View switcher (website ⇄ developer portal)
+│   ├── components/
+│   │   ├── CompanyWebsite.tsx
+│   │   ├── DeveloperPortal.tsx
+│   │   └── NavaiLogo.tsx
+│   ├── data.ts              # Site content (company info, team, milestones)
+│   ├── types.ts             # Shared TypeScript types
+│   └── assets/images/       # Static images
+└── .github/workflows/
+    └── deploy.yml           # GitHub Pages deployment
+```
+
+## Deployment
+
+Every push to `main` triggers the [deploy workflow](.github/workflows/deploy.yml), which builds the app with `npm ci && npm run build` and publishes `dist/` to GitHub Pages.
+
+> **Note:** The repository's Pages settings must have **Source: GitHub Actions** selected (Settings → Pages).
