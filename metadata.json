@@ -1,0 +1,6 @@
+{
+  "name": "Spacecraft Autonomy Showcase & Repository Template",
+  "description": "Sleek, professional space autonomy company website and interactive developer portal containing Jekyll and Hugo static site generator templates with automated GitHub Actions deployment.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
