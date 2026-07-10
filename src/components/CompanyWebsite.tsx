@@ -18,9 +18,8 @@ import {
   RefreshCw, 
   ExternalLink, 
   FileText, 
-  CheckCircle, 
-  Sliders, 
-  Eye, 
+  CheckCircle,
+  Eye,
   BookOpen, 
   MapPin, 
   Github, 
@@ -45,12 +44,37 @@ interface CompanyWebsiteProps {
 
 export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWebsiteProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', org: '', email: '', message: '' });
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setContactForm({ name: '', org: '', email: '', message: '' });
+    setIsSending(true);
+    setSubmitError(false);
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/akum86@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: contactForm.name,
+          organization: contactForm.org,
+          email: contactForm.email,
+          message: contactForm.message,
+          _subject: `NAVAI website inquiry from ${contactForm.name}`,
+          _replyto: contactForm.email,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+      if (!res.ok) throw new Error(`FormSubmit responded ${res.status}`);
+      setIsSubmitted(true);
+      setContactForm({ name: '', org: '', email: '', message: '' });
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -67,13 +91,6 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
             <a href="#contact" className="text-slate-300 hover:text-cyan-400 transition">Get in Touch</a>
           </nav>
 
-          <button 
-            onClick={onSwitchToDeveloperPortal}
-            className="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-800 text-slate-100 px-4 py-2.5 rounded-lg text-sm font-medium transition cursor-pointer"
-          >
-            <Sliders className="w-4 h-4 text-cyan-400" />
-            <span>Setup GitHub Pages</span>
-          </button>
         </div>
       </header>
 
@@ -318,6 +335,12 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                   />
                 </div>
 
+                {submitError && (
+                  <p className="text-xs text-red-400 font-mono">
+                    Transmission failed. Please try again, or email us directly at akum86@gmail.com.
+                  </p>
+                )}
+
                 <div className="pt-2 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
                     <ShieldCheck className="w-4 h-4 text-emerald-500" />
@@ -325,10 +348,20 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                   </div>
                   <button
                     type="submit"
-                    className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-semibold px-6 py-3 rounded-lg text-sm hover:opacity-95 transition shadow-lg shadow-cyan-500/10 flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={isSending}
+                    className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-semibold px-6 py-3 rounded-lg text-sm hover:opacity-95 transition shadow-lg shadow-cyan-500/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <span>Send Inquiry</span>
-                    <ChevronRight className="w-4 h-4" />
+                    {isSending ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        <span>Transmitting…</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Inquiry</span>
+                        <ChevronRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
@@ -345,9 +378,6 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
           <NavaiLogo className="h-8" showText={true} />
           <div>
             © 2026 NAVAI. All rights reserved.
-          </div>
-          <div className="flex gap-4">
-            <span className="text-slate-400 hover:text-white cursor-pointer" onClick={onSwitchToDeveloperPortal}>Setup GitHub Pages Template</span>
           </div>
         </div>
       </footer>
