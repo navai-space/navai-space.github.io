@@ -371,7 +371,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-slate-900 py-12 text-xs text-slate-500 text-center font-mono space-y-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <NavaiLogo className="h-8" showText={true} />
+          <NavaiLogo className="h-8" />
           <div>
             © 2026 NAVAI. All rights reserved.
           </div>
