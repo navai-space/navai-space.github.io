@@ -1,5 +1,5 @@
 import React from 'react';
-import navaiLogo from '../assets/images/navai_logo_light.png';
+import navaiLogo from '../assets/logo/svg/NAVAI-logo_primary.svg';
 
 interface NavaiLogoProps {
   className?: string;

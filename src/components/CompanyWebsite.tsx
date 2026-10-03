@@ -5,55 +5,44 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Cpu, 
-  Terminal, 
-  Database, 
-  Globe, 
-  TrendingUp, 
-  Sparkles, 
-  ChevronRight, 
-  Play, 
-  Pause, 
-  RefreshCw, 
-  ExternalLink, 
-  FileText, 
+import {
+  Cpu,
+  Globe,
+  Sparkles,
+  ChevronRight,
+  RefreshCw,
+  FileText,
   CheckCircle,
   Eye,
-  BookOpen, 
-  MapPin, 
-  Github, 
-  Linkedin, 
-  Award, 
-  Activity, 
-  Sun, 
+  Linkedin,
+  Sun,
   ShieldCheck,
   Zap,
   Flame,
-  Info,
   Mail,
   Radar
 } from 'lucide-react';
-import { startupData } from '../data';
 import NavaiLogo from './NavaiLogo';
 
 
-interface CompanyWebsiteProps {
-  onSwitchToDeveloperPortal: () => void;
-}
+// FormSubmit target. Replace the email with the random alias FormSubmit emails you after the
+// first activation (see formsubmit.co, "Hide your email address") so the address isn't public.
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/akum86@gmail.com';
 
-export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWebsiteProps) {
+export default function CompanyWebsite() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', org: '', email: '', message: '' });
+  // Honeypot: hidden from people, but bots fill it in and FormSubmit then discards the submission.
+  const [honeypot, setHoneypot] = useState('');
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSending(true);
     setSubmitError(false);
     try {
-      const res = await fetch('https://formsubmit.co/ajax/akum86@gmail.com', {
+      const res = await fetch(FORMSUBMIT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
@@ -65,6 +54,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
           _replyto: contactForm.email,
           _template: 'table',
           _captcha: 'false',
+          _honey: honeypot,
         }),
       });
       if (!res.ok) throw new Error(`FormSubmit responded ${res.status}`);
@@ -106,7 +96,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
             The Onboard Perception Layer for <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Spacecraft Autonomy</span>
           </h1>
           <p className="text-lg sm:text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            An edge-optimized multi-sensor foundation model that lets spacecraft track non-cooperative orbital targets in real time, under the harshest lighting conditions in orbit. Fusing RGB, thermal, and neuromorphic event streams.
+            An edge-optimized multi-sensor foundation model designed to help spacecraft track non-cooperative orbital targets in real time, including in the difficult lighting conditions of orbit. It fuses RGB, thermal, neuromorphic event, and LiDAR data.
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 pt-2">
@@ -139,13 +129,13 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
           <div className="text-center space-y-4 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/50 border border-blue-800/40 text-xs font-mono text-blue-400">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Robust Under Extreme Conditions</span>
+              <span>Built for Extreme Conditions</span>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Multimodal Space Foundation Model
             </h2>
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-              Direct space intelligence cannot rely on standard single-sensor vision. The NAVAI Foundation Model integrates multi-modal inputs—RGB, thermal, neuromorphic event streams, and high-precision LiDAR depth tracking—to provide continuous, depth-aware, and robust perception across diverse space environments, glare, and total eclipses.
+              Single-sensor vision struggles with the glare, darkness, and fast motion of orbital operations. The NAVAI Foundation Model combines RGB, thermal, neuromorphic event, and LiDAR depth data, and is designed to keep perception continuous and depth-aware through glare and eclipse.
             </p>
           </div>
           
@@ -156,28 +146,28 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                 <Sun className="w-4 h-4" />
               </div>
               <h4 className="text-white font-semibold font-sans">Specular Filtration</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">Fuses event cameras that filter high specular reflection of satellite MLI blankets.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Uses event-camera data to reduce the impact of strong specular reflections from satellite MLI blankets.</p>
             </div>
             <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
               <div className="p-2 bg-amber-950 border border-amber-800 text-amber-500 w-fit rounded-lg">
                 <Flame className="w-4 h-4" />
               </div>
               <h4 className="text-white font-semibold font-sans">Thermal Continuum</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">Maintains target edge contour tracking in complete orbital eclipse darkness.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Helps maintain target contour tracking during orbital eclipse, when visible-light cameras see little.</p>
             </div>
             <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
               <div className="p-2 bg-emerald-950 border border-emerald-800 text-emerald-400 w-fit rounded-lg">
                 <Zap className="w-4 h-4" />
               </div>
               <h4 className="text-white font-semibold font-sans">Neuromorphic Processing</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">Captures microsecond asynchronous changes, completely eliminating high-rotation motion blur.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Captures microsecond-scale asynchronous changes, reducing motion blur on fast-rotating targets.</p>
             </div>
             <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
               <div className="p-2 bg-blue-950 border border-blue-800 text-blue-400 w-fit rounded-lg">
                 <Radar className="w-4 h-4" />
               </div>
               <h4 className="text-white font-semibold font-sans">LiDAR & Depth Ranging</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">Indicates absolute target depth, mapping high-density range point clouds for precise docking maneuvers.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Adds direct range measurements and point clouds to support precise docking approaches.</p>
             </div>
           </div>
         </div>
@@ -195,7 +185,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
               Foundation Model Application Areas
             </h2>
             <p className="mt-4 text-slate-400 text-sm sm:text-base">
-              Our foundational model is engineered to support a wide range of autonomous orbital operations, delivering critical awareness and precision across diverse space missions.
+              Our foundation model is being designed to support a range of autonomous orbital operations, from docking and servicing to debris removal and space domain awareness.
             </p>
           </div>
 
@@ -203,22 +193,22 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
             {[
               {
                 title: "Autonomous Docking & RPO",
-                desc: "Delivers continuous, high-precision 6-DoF pose estimation to guide autonomous proximity operations, spacecraft berthing, and orbital refueling.",
+                desc: "Designed to provide continuous 6-DoF pose estimation to support autonomous proximity operations, spacecraft berthing, and orbital refueling.",
                 icon: <Cpu className="w-5 h-5 text-cyan-400" />
               },
               {
                 title: "Space Domain Awareness",
-                desc: "Enables passive tracking, characterization, and classification of resident space objects and high-speed debris, even in low-visibility eclipses.",
+                desc: "Supports passive tracking, characterization, and classification of resident space objects and debris, including during low-visibility eclipse periods.",
                 icon: <Eye className="w-5 h-5 text-blue-400" />
               },
               {
                 title: "Active Debris Removal",
-                desc: "Allows capture vehicles to analyze and synchronize motion with tumbling, non-cooperative target bodies in unstructured states.",
+                desc: "Helps capture vehicles estimate the motion of tumbling, non-cooperative targets so they can approach and match it.",
                 icon: <Zap className="w-5 h-5 text-amber-400" />
               },
               {
                 title: "RPO in Lunar Orbit",
-                desc: "Guarantees robust relative navigation and target tracking during rendezvous and proximity operations (RPO) in cislunar space and lunar orbit, overcoming challenging terrain glare and extreme shadows.",
+                desc: "Designed for relative navigation and target tracking during rendezvous and proximity operations (RPO) in cislunar space and lunar orbit, where terrain glare and deep shadows make perception difficult.",
                 icon: <Globe className="w-5 h-5 text-emerald-400" />
               }
             ].map((app, idx) => (
@@ -263,7 +253,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                 </div>
                 <h3 className="text-xl font-bold text-white font-mono uppercase tracking-wider">Transmission Received</h3>
                 <p className="text-slate-400 text-sm max-w-md mx-auto">
-                  Thank you for reaching out to NAVAI. Your inquiry has been routed to our systems engineering team. We will respond within 24 standard hours.
+                  Thank you for reaching out to NAVAI. Your inquiry has been routed to our team, and we'll get back to you soon.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
@@ -274,6 +264,16 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
               </motion.div>
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-6">
+                <input
+                  type="text"
+                  name="_honey"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  className="hidden"
+                />
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="block text-xs font-mono uppercase tracking-wider text-slate-400" htmlFor="name">
@@ -286,7 +286,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                       value={contactForm.name}
                       onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
                       className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition"
-                      placeholder="e.g. Dr. Helen Vance"
+                      placeholder="Your name"
                     />
                   </div>
                   <div className="space-y-2">
@@ -300,7 +300,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                       value={contactForm.org}
                       onChange={(e) => setContactForm(prev => ({ ...prev, org: e.target.value }))}
                       className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition"
-                      placeholder="e.g. Space Logistics Corp"
+                      placeholder="Company, agency or university"
                     />
                   </div>
                 </div>
@@ -316,7 +316,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
                     value={contactForm.email}
                     onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition"
-                    placeholder="h.vance@spacelogistics.com"
+                    placeholder="you@organization.com"
                   />
                 </div>
 
@@ -337,7 +337,7 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
 
                 {submitError && (
                   <p className="text-xs text-red-400 font-mono">
-                    Transmission failed. Please try again, or email us directly at akum86@gmail.com.
+                    Transmission failed. Please check your connection and try again in a moment.
                   </p>
                 )}
 
@@ -372,8 +372,20 @@ export default function CompanyWebsite({ onSwitchToDeveloperPortal }: CompanyWeb
       <footer className="bg-slate-950 border-t border-slate-900 py-12 text-xs text-slate-500 text-center font-mono space-y-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <NavaiLogo className="h-8" />
-          <div>
-            © 2026 NAVAI. All rights reserved.
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <a
+              href="https://www.linkedin.com/company/navai-space"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition"
+              aria-label="NAVAI Space on LinkedIn"
+            >
+              <Linkedin className="w-4 h-4" />
+              <span>LinkedIn</span>
+            </a>
+            <div>
+              © 2026 NAVAI. All rights reserved.
+            </div>
           </div>
         </div>
       </footer>
